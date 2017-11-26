@@ -30,6 +30,9 @@ exports.default = {
         backgroundColor: red
     },
 
-    headerTitle: {}
+    headerTitle: {
+        color: '#FFFFFF'
+
+    }
 
 };

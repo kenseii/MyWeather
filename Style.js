@@ -28,6 +28,7 @@ header:{
 },
 
 headerTitle:{
+    color:'#FFFFFF'
 
 }
 

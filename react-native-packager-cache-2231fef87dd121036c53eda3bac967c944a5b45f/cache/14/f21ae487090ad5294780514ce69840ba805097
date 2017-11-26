@@ -20,6 +20,14 @@ var _reactNative = require('react-native');
 
 var _reactNavigation = require('react-navigation');
 
+var _axios = require('axios');
+
+var _axios2 = _interopRequireDefault(_axios);
+
+var _Style = require('../Style');
+
+var _Style2 = _interopRequireDefault(_Style);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -50,31 +58,60 @@ function _wrapComponent(id) {
 var List = _wrapComponent('List')((_temp = _class = function (_React$Component) {
     _inherits(List, _React$Component);
 
-    function List() {
+    function List(props) {
         _classCallCheck(this, List);
 
-        return _possibleConstructorReturn(this, (List.__proto__ || Object.getPrototypeOf(List)).apply(this, arguments));
+        var _this = _possibleConstructorReturn(this, (List.__proto__ || Object.getPrototypeOf(List)).call(this, props));
+
+        console.log('state', _this.props.navigation.state);
+        _this.state = {
+            city: _this.props.navigation.state.params.city,
+            report: null
+
+        };
+        _this.fetchWeather();
+        return _this;
     }
 
     _createClass(List, [{
+        key: 'fetchWeather',
+        value: function fetchWeather() {
+
+            _axios2.default.get('http://api.openweathermap.org/data/2.5/forecast/daily?q=' + this.state.city + '&mode=json&units=metric&cnt=10&appid=94c6cf0868fa5cb930a5e2d71baf0dbf').then(function (response) {
+                console.log(response.data);
+            });
+        }
+    }, {
         key: 'render',
         value: function render() {
-            return _react3.default.createElement(
-                _reactNative.Text,
-                {
-                    __source: {
+            if (this.state.report === null) {
+                return _react3.default.createElement(_reactNative.ActivityIndicator, { color: _Style2.default.color, size: 'large', __source: {
                         fileName: _jsxFileName,
-                        lineNumber: 15
+                        lineNumber: 44
                     }
-                },
-                'Hello world'
-            );
+                });
+            } else {
+                return _react3.default.createElement(
+                    _reactNative.Text,
+                    {
+                        __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 49
+                        }
+                    },
+                    'Hello world'
+                );
+            }
         }
     }]);
 
     return List;
-}(_react3.default.Component), _class.navigationOptions = {
-    title: 'Weather/'
+}(_react3.default.Component), _class.navigationOptions = function (_ref) {
+    var navigation = _ref.navigation;
+
+    return {
+        title: 'Weather/ ' + navigation.state.params.city
+    };
 }, _temp));
 
 exports.default = List;
