@@ -33,7 +33,8 @@ headerTitle:{
 },
 
 activityIndicatorViewStyle:{
-    paddingTop:25
+    paddingTop:45,
+    marginTop:52
 }
 
 }

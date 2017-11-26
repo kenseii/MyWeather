@@ -22,6 +22,18 @@ var _propTypes = require('prop-types');
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
+var _Style = require('../../Style');
+
+var _Style2 = _interopRequireDefault(_Style);
+
+var _moment = require('moment');
+
+var _moment2 = _interopRequireDefault(_moment);
+
+var _fadeInView = require('../animation/fadeInView');
+
+var _fadeInView2 = _interopRequireDefault(_fadeInView);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -59,28 +71,162 @@ var Row = _wrapComponent('Row')((_temp = _class = function (_React$Component) {
     }
 
     _createClass(Row, [{
-        key: 'render',
-        value: function render() {
+        key: 'day',
+        value: function day() {
+
+            var day = (0, _moment2.default)(this.props.day.dt * 1000).format('ddd');
+
             return _react3.default.createElement(
-                _reactNative.View,
-                {
-                    __source: {
+                _reactNative.Text,
+                { style: [style.white, style.bold], __source: {
                         fileName: _jsxFileName,
-                        lineNumber: 15
+                        lineNumber: 22
                     }
                 },
-                _react3.default.createElement(
-                    _reactNative.Text,
-                    {
-                        __source: {
+                day.toUpperCase()
+            );
+        }
+    }, {
+        key: 'icon',
+        value: function icon() {
+            var size = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 50;
+
+            var type = this.props.day.weather[0].main.toLocaleLowerCase();
+            var image = void 0;
+
+            switch (type) {
+                case 'clouds':
+                    image = require('./icons/cloudy.png');
+                    break;
+                case 'rain':
+                    image = require('./icons/rain.png');
+                    break;
+                default:
+                    image = require('./icons/sun.png');
+            }
+            return _react3.default.createElement(_reactNative.Image, { source: image, style: { width: size, height: size }, __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 40
+                }
+            });
+        }
+    }, {
+        key: 'date',
+        value: function date() {
+
+            var day = (0, _moment2.default)(this.props.day.dt * 1000).format('DD/MM');
+
+            return _react3.default.createElement(
+                _reactNative.Text,
+                { style: { color: '#ececec' }, __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 48
+                    }
+                },
+                day
+            );
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+
+            if (this.props.index === 0) {
+                return _react3.default.createElement(
+                    _fadeInView2.default,
+                    { delay: this.props.index * 50, __source: {
                             fileName: _jsxFileName,
-                            lineNumber: 16
+                            lineNumber: 56
                         }
                     },
-                    this.props.day.temp.day,
-                    ' \xB0C'
-                )
-            );
+                    _react3.default.createElement(
+                        _reactNative.View,
+                        { style: [style.view, style.flex, style.firstView], __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 57
+                            }
+                        },
+                        _react3.default.createElement(
+                            _reactNative.View,
+                            {
+                                __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 58
+                                }
+                            },
+                            _react3.default.createElement(
+                                _reactNative.Text,
+                                {
+                                    __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 60
+                                    }
+                                },
+                                this.day(),
+                                ' ',
+                                this.date()
+                            ),
+                            this.icon(90)
+                        ),
+                        _react3.default.createElement(
+                            _reactNative.Text,
+                            { style: [style.temp, { fontSize: 35 }], __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 64
+                                }
+                            },
+                            Math.round(this.props.day.temp.day),
+                            ' \xB0C'
+                        )
+                    )
+                );
+            } else {
+                return _react3.default.createElement(
+                    _fadeInView2.default,
+                    { delay: this.props.index * 50, __source: {
+                            fileName: _jsxFileName,
+                            lineNumber: 71
+                        }
+                    },
+                    _react3.default.createElement(
+                        _reactNative.View,
+                        { style: [style.view, style.flex], __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 72
+                            }
+                        },
+                        _react3.default.createElement(
+                            _reactNative.View,
+                            { style: style.flex, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 73
+                                }
+                            },
+                            this.icon(),
+                            _react3.default.createElement(
+                                _reactNative.Text,
+                                { style: { marginLeft: 10 }, __source: {
+                                        fileName: _jsxFileName,
+                                        lineNumber: 75
+                                    }
+                                },
+                                this.day(),
+                                ' ',
+                                this.date()
+                            )
+                        ),
+                        _react3.default.createElement(
+                            _reactNative.Text,
+                            { style: style.temp, __source: {
+                                    fileName: _jsxFileName,
+                                    lineNumber: 77
+                                }
+                            },
+                            Math.round(this.props.day.temp.day),
+                            ' \xB0C'
+                        )
+                    )
+                );
+            }
         }
     }]);
 
@@ -92,3 +238,43 @@ var Row = _wrapComponent('Row')((_temp = _class = function (_React$Component) {
 }, _temp));
 
 exports.default = Row;
+
+
+var style = _reactNative.StyleSheet.create({
+    white: {
+        color: '#fff'
+    },
+    bold: {
+        fontWeight: 'bold'
+    },
+
+    flex: {
+        flex: 1,
+        alignItems: 'center',
+        flexDirection: 'row'
+
+    },
+
+    firstView: {
+        backgroundColor: '#e54b65'
+
+    },
+    view: {
+        backgroundColor: '#394168',
+        borderWidth: 0,
+        borderColor: '#fff',
+        borderBottomWidth: 1,
+        borderBottomColor: '#e3e6e8',
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        justifyContent: 'space-between'
+
+    },
+
+    temp: {
+        color: '#FFF',
+        fontWeight: 'bold',
+        fontSize: 22
+    }
+
+});

@@ -42,6 +42,7 @@ class Search extends React.Component{
             style={style.input}
             value={this.state.city}
             onChangeText={(text) => this.setCity(text)}
+            onSubmitEditing={()=>this.submit}
 
 
         />

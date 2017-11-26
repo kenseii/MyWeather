@@ -1,23 +1,31 @@
 import React from 'react'
 
-import {Text, ActivityIndicator,ListView} from 'react-native'
+import {Text, ActivityIndicator,ListView,Image,View,ToastAndroid} from 'react-native'
 
-import {StackNavigator} from 'react-navigation'
+import {StackNavigator, NavigationActions} from 'react-navigation'
 
 import axios from 'axios'
 
 import style from '../Style'
 
-import WeatherRow from './weather/Row'
 
+import WeatherRow from './weather/Row'
+import Search from "./Search";
 
 export default class List extends React.Component{
 
     static navigationOptions = ({navigation}) =>{
         return {
-            title: `Weather/ ${navigation.state.params.city}`
+            title: `Weather/ ${navigation.state.params.city}`,
+            tabBarIcon:()=>{
+                return <Image source={require('./icons/home.png')} style={{width:20,height:20}}/>
+            }
         }
+
     }
+
+
+
 
     constructor (props){
 
@@ -28,7 +36,12 @@ export default class List extends React.Component{
             report:null
 
         }
-        this.fetchWeather()
+        setTimeout(()=>{
+            this.fetchWeather()
+
+
+        }, 1000)
+
     }
 
     fetchWeather(){
@@ -36,16 +49,30 @@ export default class List extends React.Component{
         axios.get(`http://api.openweathermap.org/data/2.5/forecast/daily?q=${this.state.city}&mode=json&units=metric&cnt=10&appid=94c6cf0868fa5cb930a5e2d71baf0dbf`)
             .then((response)=>{
                 this.setState({report: response.data})
+
             })
+            .catch(function (error) {
+                console.log(error);
+                console.log(this);
+                this.props.navigation.navigate('Search')
 
 
-    }
+
+
+    })}
+
+
 
     render(){
+
         if (this.state.report === null){
             return(
                 <ActivityIndicator style={style.activityIndicatorViewStyle} color={style.color} size="large"/>
             )
+
+
+
+
         }
         else{
             const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});

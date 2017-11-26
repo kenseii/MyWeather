@@ -32,6 +32,10 @@ var _Row = require('./weather/Row');
 
 var _Row2 = _interopRequireDefault(_Row);
 
+var _Search = require('./Search');
+
+var _Search2 = _interopRequireDefault(_Search);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -73,7 +77,10 @@ var List = _wrapComponent('List')((_temp = _class = function (_React$Component) 
             report: null
 
         };
-        _this.fetchWeather();
+        setTimeout(function () {
+            _this.fetchWeather();
+        }, 1000);
+
         return _this;
     }
 
@@ -84,15 +91,20 @@ var List = _wrapComponent('List')((_temp = _class = function (_React$Component) 
 
             _axios2.default.get('http://api.openweathermap.org/data/2.5/forecast/daily?q=' + this.state.city + '&mode=json&units=metric&cnt=10&appid=94c6cf0868fa5cb930a5e2d71baf0dbf').then(function (response) {
                 _this2.setState({ report: response.data });
+            }).catch(function (error) {
+                console.log(error);
+                console.log(this);
+                this.props.navigation.navigate('Search');
             });
         }
     }, {
         key: 'render',
         value: function render() {
+
             if (this.state.report === null) {
                 return _react3.default.createElement(_reactNative.ActivityIndicator, { style: _Style2.default.activityIndicatorViewStyle, color: _Style2.default.color, size: 'large', __source: {
                         fileName: _jsxFileName,
-                        lineNumber: 47
+                        lineNumber: 70
                     }
                 });
             } else {
@@ -104,12 +116,12 @@ var List = _wrapComponent('List')((_temp = _class = function (_React$Component) 
                     renderRow: function renderRow(row, j, k) {
                         return _react3.default.createElement(_Row2.default, { day: row, index: parseInt(k, 10), __source: {
                                 fileName: _jsxFileName,
-                                lineNumber: 55
+                                lineNumber: 82
                             }
                         });
                     }, __source: {
                         fileName: _jsxFileName,
-                        lineNumber: 54
+                        lineNumber: 81
                     }
                 });
             }
@@ -121,7 +133,14 @@ var List = _wrapComponent('List')((_temp = _class = function (_React$Component) 
     var navigation = _ref.navigation;
 
     return {
-        title: 'Weather/ ' + navigation.state.params.city
+        title: 'Weather/ ' + navigation.state.params.city,
+        tabBarIcon: function tabBarIcon() {
+            return _react3.default.createElement(_reactNative.Image, { source: require('./icons/home.png'), style: { width: 20, height: 20 }, __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 21
+                }
+            });
+        }
     };
 }, _temp));
 

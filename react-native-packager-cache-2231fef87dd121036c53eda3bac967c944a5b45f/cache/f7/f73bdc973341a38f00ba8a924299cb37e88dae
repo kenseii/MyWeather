@@ -100,6 +100,9 @@ var Search = _wrapComponent('Search')((_temp = _class = function (_React$Compone
                     onChangeText: function onChangeText(text) {
                         return _this2.setCity(text);
                     },
+                    onSubmitEditing: function onSubmitEditing() {
+                        return _this2.submit;
+                    },
 
                     __source: {
                         fileName: _jsxFileName,
@@ -110,7 +113,7 @@ var Search = _wrapComponent('Search')((_temp = _class = function (_React$Compone
                         return _this2.submit();
                     }, title: 'Search a city', __source: {
                         fileName: _jsxFileName,
-                        lineNumber: 48
+                        lineNumber: 49
                     }
                 })
             );
