@@ -17,7 +17,7 @@ class Search extends React.Component{
 
       super(props)
         this.state = {
-          city: 'Remera'
+          city: 'Kigali'
         }
     }
 

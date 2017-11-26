@@ -30,6 +30,10 @@ header:{
 headerTitle:{
     color:'#FFFFFF'
 
+},
+
+activityIndicatorViewStyle:{
+    paddingTop:25
 }
 
 }

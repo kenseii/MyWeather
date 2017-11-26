@@ -64,7 +64,7 @@ var Search = _wrapComponent('Search')((_temp = _class = function (_React$Compone
         var _this = _possibleConstructorReturn(this, (Search.__proto__ || Object.getPrototypeOf(Search)).call(this, props));
 
         _this.state = {
-            city: 'Remera'
+            city: 'Kigali'
         };
         return _this;
     }

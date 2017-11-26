@@ -1,12 +1,15 @@
 import React from 'react'
 
-import {Text, ActivityIndicator} from 'react-native'
+import {Text, ActivityIndicator,ListView} from 'react-native'
 
 import {StackNavigator} from 'react-navigation'
 
 import axios from 'axios'
 
 import style from '../Style'
+
+import WeatherRow from './weather/Row'
+
 
 export default class List extends React.Component{
 
@@ -32,7 +35,7 @@ export default class List extends React.Component{
 
         axios.get(`http://api.openweathermap.org/data/2.5/forecast/daily?q=${this.state.city}&mode=json&units=metric&cnt=10&appid=94c6cf0868fa5cb930a5e2d71baf0dbf`)
             .then((response)=>{
-                console.log(response.data)
+                this.setState({report: response.data})
             })
 
 
@@ -41,12 +44,15 @@ export default class List extends React.Component{
     render(){
         if (this.state.report === null){
             return(
-                <ActivityIndicator color={style.color} size="large"/>
+                <ActivityIndicator style={style.activityIndicatorViewStyle} color={style.color} size="large"/>
             )
         }
         else{
+            const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
             return(
-                <Text>Hello world</Text>
+                <ListView dataSource={ds.cloneWithRows(this.state.report.list)}
+                          renderRow={(row, j, k) => <WeatherRow day={row} index={parseInt(k, 10)}/>} />
             )
         }
 

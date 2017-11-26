@@ -28,6 +28,10 @@ var _Style = require('../Style');
 
 var _Style2 = _interopRequireDefault(_Style);
 
+var _Row = require('./weather/Row');
+
+var _Row2 = _interopRequireDefault(_Row);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -76,31 +80,38 @@ var List = _wrapComponent('List')((_temp = _class = function (_React$Component) 
     _createClass(List, [{
         key: 'fetchWeather',
         value: function fetchWeather() {
+            var _this2 = this;
 
             _axios2.default.get('http://api.openweathermap.org/data/2.5/forecast/daily?q=' + this.state.city + '&mode=json&units=metric&cnt=10&appid=94c6cf0868fa5cb930a5e2d71baf0dbf').then(function (response) {
-                console.log(response.data);
+                _this2.setState({ report: response.data });
             });
         }
     }, {
         key: 'render',
         value: function render() {
             if (this.state.report === null) {
-                return _react3.default.createElement(_reactNative.ActivityIndicator, { color: _Style2.default.color, size: 'large', __source: {
+                return _react3.default.createElement(_reactNative.ActivityIndicator, { style: _Style2.default.activityIndicatorViewStyle, color: _Style2.default.color, size: 'large', __source: {
                         fileName: _jsxFileName,
-                        lineNumber: 44
+                        lineNumber: 47
                     }
                 });
             } else {
-                return _react3.default.createElement(
-                    _reactNative.Text,
-                    {
-                        __source: {
-                            fileName: _jsxFileName,
-                            lineNumber: 49
-                        }
-                    },
-                    'Hello world'
-                );
+                var ds = new _reactNative.ListView.DataSource({ rowHasChanged: function rowHasChanged(r1, r2) {
+                        return r1 !== r2;
+                    } });
+
+                return _react3.default.createElement(_reactNative.ListView, { dataSource: ds.cloneWithRows(this.state.report.list),
+                    renderRow: function renderRow(row, j, k) {
+                        return _react3.default.createElement(_Row2.default, { day: row, index: parseInt(k, 10), __source: {
+                                fileName: _jsxFileName,
+                                lineNumber: 55
+                            }
+                        });
+                    }, __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 54
+                    }
+                });
             }
         }
     }]);
