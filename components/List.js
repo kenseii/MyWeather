@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {Text, ActivityIndicator,ListView,Image,View,ToastAndroid} from 'react-native'
+import {Text, ActivityIndicator,ListView,Image,View,ToastAndroid, Alert} from 'react-native'
 
 import {StackNavigator, NavigationActions} from 'react-navigation'
 
@@ -36,16 +36,22 @@ export default class List extends React.Component{
             report:null
 
         }
+
+        this.fetchWeather = this.fetchWeather.bind(this);
+
+    }
+
+    componentWillMount(){
         setTimeout(()=>{
             this.fetchWeather()
 
 
         }, 1000)
-
     }
 
     fetchWeather(){
 
+        let that = this;
         axios.get(`http://api.openweathermap.org/data/2.5/forecast/daily?q=${this.state.city}&mode=json&units=metric&cnt=10&appid=94c6cf0868fa5cb930a5e2d71baf0dbf`)
             .then((response)=>{
                 this.setState({report: response.data})
@@ -53,8 +59,15 @@ export default class List extends React.Component{
             })
             .catch(function (error) {
                 console.log(error);
-                console.log(this);
-                this.props.navigation.navigate('Search')
+                // console.log(this);
+                // return promise.reject(error);
+                return Alert.alert(
+                    'Error getting weather data',
+                    'Please try again later',
+                    [
+                        {text: 'OK', onPress: () => that.props.navigation.goBack()},
+                    ],
+                )
 
 
 
